@@ -52,10 +52,10 @@ spec:
         ports:
         - containerPort: 9092
         env:
-        # - name: MY_NODE_NAME
-        #   valueFrom:
-        #     fieldRef:
-        #       fieldPath: spec.nodeName
+        - name: MY_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
         - name: MY_POD_NAME
           valueFrom:
             fieldRef:
