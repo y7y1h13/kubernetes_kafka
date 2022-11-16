@@ -98,12 +98,12 @@ spec:
             - name: NFS_SERVER
               value: 35.74.244.164
             - name: NFS_PATH
-              value: /home/ubuntu/new_pv/zk
+              value: /home/ubuntu/smilegate
       volumes:
         - name: nfs-client-root
           nfs:
             server: 35.74.244.164
-            path: /home/ubuntu/new_pv/zk
+            path: /home/ubuntu/smilegate
 ---
 # StorageClass
 kind: StorageClass
