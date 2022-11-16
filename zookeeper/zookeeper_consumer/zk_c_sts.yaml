@@ -2,9 +2,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: zk-hs
-  namespace: zk_c
+  namespace: zk-con
   labels:
-    app: zk_c
+    app: zk-con
 spec:
   ports:
   - port: 2888
@@ -13,28 +13,28 @@ spec:
     name: leader-election
   clusterIP: None
   selector:
-    app: zk_c
+    app: zk-con
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: zk-cs
-  namespace: zk_c
+  namespace: zk-con
 
   labels:
-    app: zk_c
+    app: zk-con
 spec:
   ports:
   - port: 2181
     name: client
   selector:
-    app: zk_c
+    app: zk-con
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: zk-pdb
-  namespace: zk_c
+  namespace: zk-con
 
 spec:
   selector:
@@ -45,13 +45,13 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: zk_c
-  namespace: zk
+  name: zk-con
+  namespace: zk-con
 
 spec:
   selector:
     matchLabels:
-      app: zk_c
+      app: zk-con
   serviceName: zk-hs
   replicas: 3
   updateStrategy:
@@ -60,7 +60,7 @@ spec:
   template:
     metadata:
       labels:
-        app: zk
+        app: zk-con
     spec:
       affinity:
         podAntiAffinity:
@@ -70,7 +70,7 @@ spec:
                   - key: "app"
                     operator: In
                     values:
-                    - zk
+                    - zk-con
               topologyKey: "kubernetes.io/hostname"
       containers:
       - name: kubernetes-zookeeper

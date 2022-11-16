@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: connect-service
+    namespace: sink
+    labels:
+      name: sink
+spec:
+    ports:
+    - port: 8083
+      name: sink-port
+      protocol: TCP
+      nodePort: 30652
+    selector:
+      app: sink
+    type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sink
+  namespace: sink
+spec:
+  selector:
+    matchLabels:
+      app: sink
+  serviceName: sink-service
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  podManagementPolicy: OrderedReady
+  template:
+    metadata:
+      labels:
+        app: sink
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: kafka-connect
+        image: y7y1h13/connect
+        resources:
+          requests: 
+            cpu: "1"
+            memory: 1Gi
+        ports:
+        - containerPort: 8083
+          name: connect
+
+        env:
+        - name: MY_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: MY_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: BOOTSTRAP_SERVERS
+          value: kafka-consumer-0.kafka-service.kafka-con.svc.cluster.local:9093,kafka-consumer-1.kafka-service.kafka-con.svc.cluster.local:9093,kafka-consumer-2.kafka-service.kafka-con.svc.cluster.local:9093
+        - name: GROUP_ID
+          value: connect
+        - name: CONFIG_STORAGE_TOPIC
+          value: configs
+        - name: CONFIG_STORAGE_REPLICATION_FACTOR
+          value: "1"
+        - name: OFFSET_STORAGE_TOPIC
+          value: offsets
+        - name: OFFSET_STORATE_REPLICATION_FACTOR
+          value: "1"
+        - name: STATUS_STORAGE_TOPIC
+          value: statuses
+        - name: STATUS_STORAGE_REPLICATION_FACTOR
+          value: "1"
+        - name: REST_ADVERTISED_HOST_NAME
+          value: $(MY_POD_IP)
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - "sh"
+              - "-c"
+              - |
+                curl -X POST -H "Content-Type: application/json" --data "{\"text\":\" **pod** : ${MY_POD_NAME} \n **ip** : ${MY_POD_IP} \n start\"}" https://schat.smilegate.net/hooks/NvXfDWLhRzo9pnXei/7x6GbK8gckdWHvfdASoJtuAGmjLY6smmbTPCC5qAxcDaHYjH
+          preStop:
+            exec:
+              command:
+              - "sh"
+              - "-c"
+              - |
+                curl -X POST -H "Content-Type: application/json" --data "{\"text\":\" **pod** : ${MY_POD_NAME} \n **ip** : ${MY_POD_IP} \n stop\"}" https://schat.smilegate.net/hooks/NvXfDWLhRzo9pnXei/7x6GbK8gckdWHvfdASoJtuAGmjLY6smmbTPCC5qAxcDaHYjH
+
+
+  volumeClaimTemplates:
+  - metadata:
+      name: connect
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: managed-nfs-storage
+      resources:
+        requests:
+          storage: 10Gi
