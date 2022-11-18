@@ -73,6 +73,10 @@ spec:
           value: "1"
         - name: REST_ADVERTISED_HOST_NAME
           value: $(MY_POD_IP)
+        - name: KEY_CONVERTER
+          value: org.apache.kafka.connect.converters.ByteArrayConverter
+        - name: VALUE_CONVERTER
+          value: org.apache.kafka.connect.converters.ByteArrayConverter
         lifecycle:
           postStart:
             exec:

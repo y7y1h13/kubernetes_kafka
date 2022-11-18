@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: burrow
+spec:
+  selector:
+    matchLabels:
+      app: burrow
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: burrow
+    spec:
+      hostname: burrow
+      restartPolicy: Always
+      containers:
+        - name: burrow
+          image: y7y1h13/burrow
+          volumeMounts:
+            - mountPath: /etc/burrow/burrow.conf
+              name: burrow-config
+              subPath: burrow.conf
+              readOnly: true
+      volumes:
+        - name: burrow-config
+          configMap:
+            name: burrow-config

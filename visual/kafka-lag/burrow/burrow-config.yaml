@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: burrow-config
+data:
+  burrow.conf: |+
+    [logging]
+    filename="logs/burrow.log"
+    level="info"
+    maxsize=100
+    maxbackups=30
+    maxage=10
+    use-localtime=false
+    use-compression=true
+
+    [zookeeper]
+    servers=[ "zk-0.zk-hs.zk.svc.cluster.local:2181", "zk-1.zk-hs.zk.svc.cluster.local:2181", "zk-1.zk-hs.zk.svc.cluster.local:2181" ]
+    timeout=6
+    root-path="/burrow"
+
+    [cluster.live]
+    class-name="kafka"
+    servers=[ "kafka-broker-0.kafka-service.kafka.svc.cluster.local:9092" ,"kafka-broker-1.kafka-service.kafka.svc.cluster.local:9092","kafka-broker-2.kafka-service.kafka.svc.cluster.local:9092" ]
+    topic-refresh=120
+    offset-refresh=30
+
+    [consumer.live]
+    class-name="kafka"
+    cluster="live"
+    servers=["10.42.0.3"]
+    client-profile="live"
+    group-denylist="^(console-consumer-|python-kafka-consumer-|quick-).*$"
+    group-allowlist=""
+
+    [consumer.live_zk]
+    class-name="kafka_zk"
+    cluster="live"
+    servers=[ "zk-0.zk-hs.zk.svc.cluster.local:2181", "zk-1.zk-hs.zk.svc.cluster.local:2181", "zk-1.zk-hs.zk.svc.cluster.local:2181" ]
+    zookeeper-timeout=30
+    group-blacklist="^(console-consumer-|quick-).*$"
+    group-whitelist=""
+
+    [httpserver.default]
+    address=":8000"

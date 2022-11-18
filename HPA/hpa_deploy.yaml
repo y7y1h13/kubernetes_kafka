@@ -1,0 +1,25 @@
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v2
+metadata:
+  name: consumer-hpa
+  namespace: sink
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: sink
+
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: External
+    external:
+      metric:
+        name: kafka_consumergroup_lag
+        selector:
+          matchLabels:
+            topic: k.testdb.accounts
+            consumergroup: streams-application
+      target:
+        type: Value
+        averageValue: 2

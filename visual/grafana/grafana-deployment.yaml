@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: grafana
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      hostname: grafana
+      containers:
+      - env:
+        - name: GF_INSTALL_PLUGINS
+          value: grafana-piechart-panel, blackmirror1-singlestat-math-panel
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          value: test
+        image: grafana/grafana
+        name: grafana
+        volumeMounts:
+        - mountPath: /etc/grafana/provisioning
+          name: grafana-volume
+        - mountPath: /var/lib/grafana/dashboards
+          name: grafana-volume
+        # - mountPath: /etc/grafana/grafana.ini
+        #   name: grafana-volume
+        #   readOnly: true
+      restartPolicy: Always
+      volumes:
+      - name: grafana-volume
+        persistentVolumeClaim:
+          claimName: grafana-pvc
+        # hostPath:
+        #   path: /grafana
