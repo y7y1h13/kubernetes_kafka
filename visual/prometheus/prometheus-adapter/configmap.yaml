@@ -15,4 +15,4 @@ data:
       name:
         matches: kafka_consumergroup_lag
         as: kafka_consumergroup_lag
-      metricsQuery: 'avg_over_time(kafka_consumergroup_lag_sum{topic="k.testdb.accounts", consumergroup="streams-application"}[1m])'
+      metricsQuery: 'avg_over_time(kafka_consumergroup_lag_sum{topic="mm3.k2.testdb.accounts", consumergroup="connect-sink-test-connector"}[1m])'

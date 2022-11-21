@@ -10,7 +10,7 @@ spec:
     name: sink
 
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 10
   metrics:
   - type: External
     external:
@@ -18,8 +18,8 @@ spec:
         name: kafka_consumergroup_lag
         selector:
           matchLabels:
-            topic: k.testdb.accounts
-            consumergroup: streams-application
+            topic: mm3.k2.testdb.accounts
+            consumergroup: connect-sink-test-connector
       target:
         type: Value
-        averageValue: 2
+        averageValue: 10

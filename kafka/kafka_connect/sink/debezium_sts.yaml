@@ -37,10 +37,11 @@ spec:
       restartPolicy: Always
       containers:
       - name: kafka-connect
-        image: y7y1h13/connect
+        image: y7y1h13/connect:latest
+        
         resources:
           requests: 
-            cpu: "1"
+            cpu: "0.5"
             memory: 1Gi
         ports:
         - containerPort: 8083
