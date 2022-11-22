@@ -10,7 +10,19 @@ spec:
     name: sink
 
   minReplicas: 1
-  maxReplicas: 10
+  maxReplicas: 5
+  behavior:
+    scaleUp:
+      policies:
+        - type: Pods
+          periodSeconds: 15
+          value: 3
+    scaleDown:
+      stabilizationWindowSeconds: 60
+      policies:
+        - type: Pods
+          periodSeconds: 15
+          value: 3
   metrics:
   - type: External
     external:
