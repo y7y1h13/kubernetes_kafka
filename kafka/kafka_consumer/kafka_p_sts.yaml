@@ -70,7 +70,7 @@ spec:
           value: zk-con-0.zk-hs.zk-con.svc.cluster.local:2181,zk-con-1.zk-hs.zk-con.svc.cluster.local:2181,zk-con-2.zk-hs.zk-con.svc.cluster.local:2181
         - name: KAFKA_LISTENERS
           value: PLAINTEXT://:9093
-        - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+        - name: KAFKA_DEFAULT_REPLICATION_FACTOR
           value: "3"
         - name: KAFKA_LOG_DIRS
           value: /var/lib/kafka/data
