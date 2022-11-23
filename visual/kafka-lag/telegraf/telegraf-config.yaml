@@ -22,7 +22,7 @@ data:
 
 
     [[inputs.burrow]]
-      servers = ["http://10.44.0.5:8000"]
+      servers = ["http://10.36.0.13:8000"]
       topics_exclude = [ "__consumer_offsets" ]
       groups_exclude = ["console-*"]
 

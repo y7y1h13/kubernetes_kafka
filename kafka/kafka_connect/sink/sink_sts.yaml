@@ -41,8 +41,8 @@ spec:
         
         resources:
           requests: 
-            cpu: "0.5"
-            memory: 1Gi
+            cpu: "1"
+            memory: 2Gi
         ports:
         - containerPort: 8083
           name: connect

@@ -16,13 +16,13 @@ spec:
       policies:
         - type: Pods
           periodSeconds: 5
-          value: 3
+          value: 4
     scaleDown:
-      stabilizationWindowSeconds: 10
+      stabilizationWindowSeconds: 1
       policies:
         - type: Pods
           periodSeconds: 5
-          value: 3
+          value: 4
   metrics:
   - type: External
     external:

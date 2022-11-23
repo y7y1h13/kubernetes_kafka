@@ -27,7 +27,7 @@ data:
     [consumer.live]
     class-name="kafka"
     cluster="live"
-    servers=["10.42.0.3"]
+    servers=["10.42.0.5"]
     client-profile="live"
     group-denylist="^(console-consumer-|python-kafka-consumer-|quick-).*$"
     group-allowlist=""

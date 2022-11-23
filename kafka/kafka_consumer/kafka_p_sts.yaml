@@ -52,10 +52,10 @@ spec:
         ports:
         - containerPort: 9093
         env:
-        # - name: MY_NODE_NAME
-        #   valueFrom:
-        #     fieldRef:
-        #       fieldPath: spec.nodeName
+        - name: MY_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
         - name: MY_POD_NAME
           valueFrom:
             fieldRef:
@@ -75,10 +75,6 @@ spec:
           value: "1"
         - name: KAFKA_LOG_DIRS
           value: /var/lib/kafka/data
-        # - name: KAFKA_JMX_PORT
-          # value: "9999"
-        # - name: KAFKA_OPTS
-        #   value: -javaagent:/usr/share/java/cp-base-new/jmx_prometheus_javaagent-0.14.0.jar=7071:/opt/kafka/prometheus/kafka_config.yaml
         lifecycle:
               postStart:
                 exec:
