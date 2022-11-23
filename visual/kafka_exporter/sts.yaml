@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: kafka-exporter
   namespace: monitoring
@@ -8,11 +8,15 @@ spec:
   selector:
     matchLabels:
       app: kafka-exporter
+  serviceName: kafka-exporter
+  updateStrategy:
+      type: RollingUpdate
   template:
     metadata:
       labels:
         app: kafka-exporter
     spec:
+      restartPolicy: Always
       containers:
       - name: kafka-exporter
         imagePullPolicy: IfNotPresent
@@ -24,7 +28,7 @@ spec:
           - "--kafka.server=10.44.0.5:9093"
           - "--kafka.server=10.44.0.1:9092"
           - "--kafka.server=10.42.0.1:9092"
-          - "--kafka.server=10.36.0.2:9092"                                                      
+          - "--kafka.server=10.36.0.2:9092" 
         ports:
         - name: http-metrics
           containerPort: 9308

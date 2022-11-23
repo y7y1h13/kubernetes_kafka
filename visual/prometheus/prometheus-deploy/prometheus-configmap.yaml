@@ -25,16 +25,7 @@ data:
       - job_name: kafka-exporter
         static_configs:
           - targets:
-            - "10.36.0.13:9308"
-
-      # - job_name: kakfa-exporter2
-      #   static_configs:
-      #     - targets:
-      #       - "10.36.0.7:9309"
-
-      # - job_name: kafka
-      #   static_configs:
-      #   - targets: ['10.46.0.1:7071']
+            - "kafka-exporter-0.kafka-exporter.monitoring.svc.cluster.local:9308"
 
 
       - job_name: 'kubernetes-apiservers'
